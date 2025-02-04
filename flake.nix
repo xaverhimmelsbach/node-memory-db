@@ -10,7 +10,8 @@
     flake-utils.lib.eachDefaultSystem (system:
       let
         pkgs = import nixpkgs { inherit system; };
-        nodeDependencies = (pkgs.callPackage ./default.nix {}).nodeDependencies;
+        nodeDependencies =
+          (pkgs.callPackage ./default.nix { }).nodeDependencies;
       in {
         devShell = pkgs.mkShell {
           buildInputs = with pkgs; [
@@ -18,6 +19,7 @@
             node2nix
             nodePackages.typescript
             nodePackages.typescript-language-server
+            nodePackages.prettier
             nodeDependencies
           ];
         };

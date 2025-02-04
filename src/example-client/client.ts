@@ -1,19 +1,19 @@
-import {Store} from "../api/store"
+import { Store } from "../api/store";
 
 type Item = {
-  str: string
-  num: number
-}
+  str: string;
+  num: number;
+};
 
-const s = new Store<Item>()
+const s = new Store<Item>();
 
 const i: Item = {
   str: "Hello",
   num: 42,
-}
+};
 
-console.log(i)
+console.log(i);
 
-s.store(i)
+s.store(i);
 
-console.log(s.retrieve(i))
+console.log(s.retrieve(i));

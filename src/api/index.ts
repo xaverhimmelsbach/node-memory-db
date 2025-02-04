@@ -1,6 +1,6 @@
-import { Indexable } from "./indexable"
-import { Key } from "./key"
+import { Indexable } from "./indexable";
+import { Key } from "./key";
 
 export type Index<T extends Indexable<T>> = {
-  [K in keyof T]: Key<T[K]>
-}
+  [K in keyof T]: Key<T[K]>;
+};
