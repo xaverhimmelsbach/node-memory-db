@@ -20,7 +20,7 @@ export function runBenchmark(s: Store<Song>) {
   songs.forEach(song => s.store(song))
   console.timeEnd("Storing songs...")
 
-  console.log("Searching for 'It Be' by 'The Beatles'...")
+  console.time("Searching for 'It Be' by 'The Beatles'...")
   const itBe = s.retrieve({
     title: "It Be",
     artist: "The Beatles",
