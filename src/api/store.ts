@@ -35,7 +35,6 @@ export class Store<T> {
 
   // retrieve a list of instances of T matching the values of the given instance. Fields marked as undefined are ignored
   retrieve(t: Indexable<T>): T[] {
-    console.time("bitmap")
     const ids = Object.entries(t)
       .reduce(
         (prev, curr) => {
@@ -53,17 +52,17 @@ export class Store<T> {
         fullBitmapFromIDs(this.items.map((_, index) => index)),
       )
       .get();
-    console.timeEnd("bitmap")
 
-    console.time("results")
-    let results: T[]
+    let results: T[] = []
     if(ids.length === this.items.length) {
       // Optimization: all items matched
       results = this.items
     } else {
-      results = this.items.filter((_, id) => ids.includes(id));
+      for(let i = 0; i < ids.length; i++) {
+        const id = ids[i]
+        results.push(this.items[id])
+      }
     }
-    console.timeEnd("results")
 
     return results
   }
