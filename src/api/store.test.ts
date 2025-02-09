@@ -15,12 +15,12 @@ type UnIndexableFieldTestItem = {
   j: number[];
   k: {
     x: number;
-  }
-}
+  };
+};
 
 const TestItemSeed = {
   i: 0,
-}
+};
 
 const ExpandedTestItemSeed = {
   i: 0,
@@ -33,7 +33,7 @@ const UnIndexableFieldTestItemSeed = {
   k: {
     x: 0,
   },
-}
+};
 
 describe("testing store", () => {
   test("store item", () => {
@@ -92,68 +92,72 @@ describe("testing retrieve", () => {
     expect(s.retrieve(t)).toStrictEqual([t1, t2]);
   });
   test("retrieve different items", () => {
-    const s = new Store<ExpandedTestItem>(ExpandedTestItemSeed)
+    const s = new Store<ExpandedTestItem>(ExpandedTestItemSeed);
 
     const t1: ExpandedTestItem = {
       i: 1,
       j: "Hello",
-    }
+    };
 
     const t2: ExpandedTestItem = {
       i: 1,
       j: "World",
-    }
+    };
 
     const t3: ExpandedTestItem = {
       i: 1,
       j: "!",
-    }
+    };
 
-    s.store(t1)
-    s.store(t2)
-    s.store(t3)
+    s.store(t1);
+    s.store(t2);
+    s.store(t3);
 
     const retr1: ExpandedTestItem = {
       i: 1,
       j: undefined,
-    }
+    };
 
     const retr2: ExpandedTestItem = {
       i: undefined,
       j: "Hello",
-    }
+    };
 
     const retr3: ExpandedTestItem = {
       i: undefined,
       j: "World",
-    }
+    };
 
     const retr4: ExpandedTestItem = {
       i: undefined,
       j: "!",
-    }
+    };
 
-    expect(s.retrieve(retr1)).toStrictEqual([t1, t2, t3])
-    expect(s.retrieve(retr2)).toStrictEqual([t1])
-    expect(s.retrieve(retr3)).toStrictEqual([t2])
-    expect(s.retrieve(retr4)).toStrictEqual([t3])
-  })
+    expect(s.retrieve(retr1)).toStrictEqual([t1, t2, t3]);
+    expect(s.retrieve(retr2)).toStrictEqual([t1]);
+    expect(s.retrieve(retr3)).toStrictEqual([t2]);
+    expect(s.retrieve(retr4)).toStrictEqual([t3]);
+  });
 });
 
 describe("testing unindexable fields", () => {
   test("unindexable fields", () => {
-    const s = new Store<Indexable<UnIndexableFieldTestItem>>(UnIndexableFieldTestItemSeed);
+    const s = new Store<Indexable<UnIndexableFieldTestItem>>(
+      UnIndexableFieldTestItemSeed,
+    );
 
-    const t: UnIndexableFieldTestItem= {
+    const t: UnIndexableFieldTestItem = {
       i: 1,
       j: [2, 3, 4],
       k: {
-        x: 5
-      }
+        x: 5,
+      },
     };
 
     s.store(t);
 
-    expect(s.retrieve(t as Indexable<UnIndexableFieldTestItem>)).toStrictEqual([t]);
+    expect(s.retrieve(t as Indexable<UnIndexableFieldTestItem>)).toStrictEqual([
+      t,
+    ]);
   });
 });

@@ -36,7 +36,7 @@ describe("testing bitmap and", () => {
     b2.set(1);
     b2.set(3);
 
-    const expected = new Bitmap()
+    const expected = new Bitmap();
     expected.bitset = {
       1: {},
     };
@@ -76,11 +76,11 @@ describe("testing bitmap and", () => {
     b2.set(1);
     b2.set(2);
 
-    const expected = new Bitmap()
+    const expected = new Bitmap();
     expected.bitset = {
       1: {},
       2: {},
-    }
+    };
 
     expect(b1.and(b2)).toStrictEqual(expected);
   });
@@ -90,12 +90,12 @@ describe("testing fullBitmapFromIDs", () => {
   test("from ids", () => {
     const ids = [1, 2, 5];
 
-    const expected = new Bitmap()
+    const expected = new Bitmap();
     expected.bitset = {
       1: {},
       2: {},
       5: {},
-    }
+    };
 
     expect(fullBitmapFromIDs(ids)).toStrictEqual(expected);
   });

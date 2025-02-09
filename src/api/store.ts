@@ -10,14 +10,14 @@ export class Store<T> {
 
   // seed is an empty instance of T used to initialize the indexes
   constructor(seed: T) {
-    this.items = []
+    this.items = [];
     this.index = Object.entries(seed).reduce<Index<T>>((index, seedField) => {
       // Only add indexes for indexable fields
-      if(["string", "number", "symbol"].includes(typeof seedField[1])) {
-        index[seedField[0]] = new Key<typeof seedField[1]>()
+      if (["string", "number", "symbol"].includes(typeof seedField[1])) {
+        index[seedField[0]] = new Key<(typeof seedField)[1]>();
       }
-      return index
-    }, {} as Index<T>)
+      return index;
+    }, {} as Index<T>);
   }
 
   // store an instance of T and index its fields
@@ -25,9 +25,9 @@ export class Store<T> {
     const id = this.items.push(t) - 1;
 
     Object.entries(t).forEach((v) => {
-      const index = this.index[v[0]]
+      const index = this.index[v[0]];
       // Skip unindexable fields
-      if(index !== undefined) {
+      if (index !== undefined) {
         this.index[v[0]].set(v[1], id);
       }
     });
@@ -38,32 +38,32 @@ export class Store<T> {
     const ids = Object.entries(t)
       .reduce(
         (prev, curr) => {
-          let next = prev
+          let next = prev;
           // Skip ignored fields
-          if(curr[1] !== undefined) {
-            const index = this.index[curr[0]]
+          if (curr[1] !== undefined) {
+            const index = this.index[curr[0]];
             // Only check indexable fields
-            if(index !== undefined) {
-              next = prev.and(index.get(curr[1]))
+            if (index !== undefined) {
+              next = prev.and(index.get(curr[1]));
             }
           }
-          return next
+          return next;
         },
         fullBitmapFromIDs(this.items.map((_, index) => index)),
       )
       .get();
 
-    let results: T[] = []
-    if(ids.length === this.items.length) {
+    let results: T[] = [];
+    if (ids.length === this.items.length) {
       // Optimization: all items matched
-      results = this.items
+      results = this.items;
     } else {
-      for(let i = 0; i < ids.length; i++) {
-        const id = ids[i]
-        results.push(this.items[id])
+      for (let i = 0; i < ids.length; i++) {
+        const id = ids[i];
+        results.push(this.items[id]);
       }
     }
 
-    return results
+    return results;
   }
 }

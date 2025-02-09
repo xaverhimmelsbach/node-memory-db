@@ -3,7 +3,7 @@ import { Bitmap } from "./bitmap";
 // Key holds all possible indexed values for a field of type T
 export class Key<T extends string | number | symbol> {
   values: Record<T, Bitmap>; // List of indexed values of type T
-  
+
   constructor() {
     this.values = {} as Record<T, Bitmap>;
   }

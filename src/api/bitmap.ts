@@ -35,9 +35,9 @@ export class Bitmap {
       }, {});
 
     const newB = new Bitmap();
-    newB.bitset = values
+    newB.bitset = values;
 
-    return newB
+    return newB;
   }
 }
 
