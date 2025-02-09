@@ -45,8 +45,8 @@ describe("testing store", () => {
 
     s.store(t);
 
-    expect(s.index.i.getBitmap(1).get()).toStrictEqual([0]);
-    expect(s.index.i.getBitmap(2).get()).toStrictEqual([]);
+    expect(s.index.i.get(1).get()).toStrictEqual([0]);
+    expect(s.index.i.get(2).get()).toStrictEqual([]);
   });
 });
 

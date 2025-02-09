@@ -1,5 +1,5 @@
 import { genSongs, Song } from "./song";
-import { Store } from "./store"
+import { StoreClient } from "./store"
 
 const SongSeed: Song = {
   title: "",
@@ -8,7 +8,8 @@ const SongSeed: Song = {
   release: new Date(),
 }
 
-export function runBenchmark(s: Store<Song>) {
+// run a number of benchmarks on a StoreClient to compare implementations
+export function runBenchmark(s: StoreClient<Song>) {
   s.setup(SongSeed)
 
   console.time("Generating songs...")

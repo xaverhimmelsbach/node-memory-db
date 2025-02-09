@@ -4,11 +4,11 @@ describe("testing bitmap set", () => {
   test("set entry", () => {
     const b = new Bitmap();
     b.set(1);
-    expect(b.values[1]).toStrictEqual({});
+    expect(b.bitset[1]).toStrictEqual({});
   });
   test("unset entry", () => {
     const b = new Bitmap();
-    expect(b.values[1]).toStrictEqual(undefined);
+    expect(b.bitset[1]).toStrictEqual(undefined);
   });
 });
 
@@ -37,7 +37,7 @@ describe("testing bitmap and", () => {
     b2.set(3);
 
     const expected = new Bitmap()
-    expected.values = {
+    expected.bitset = {
       1: {},
     };
 
@@ -77,7 +77,7 @@ describe("testing bitmap and", () => {
     b2.set(2);
 
     const expected = new Bitmap()
-    expected.values = {
+    expected.bitset = {
       1: {},
       2: {},
     }
@@ -91,7 +91,7 @@ describe("testing fullBitmapFromIDs", () => {
     const ids = [1, 2, 5];
 
     const expected = new Bitmap()
-    expected.values = {
+    expected.bitset = {
       1: {},
       2: {},
       5: {},

@@ -8,17 +8,15 @@ export type Song = {
 }
 
 export function genSongs(amount: number): Song[] {
-
-  
   return new Array(amount).fill(null).map<Song>((_, i) => {
+    // Generate titles between 2 to 7 words long
     const titleParts = (i % 5) + 2
     const title = new Array(titleParts).fill(null).map((_, idx) => {
       const hash = crypto.createHash("sha256")
       const hexValue = hash.update(String(i)).update(String(idx)).digest("hex").substring(0, 4)
       const numberValue = parseInt(hexValue, 16)
 
-      // console.log(numberValue)
-
+      // Avalanche effect for single words of title
       return TitleSnippets2[numberValue % TitleSnippets2.length]
     }).join(" ")
     const artist = Artists[(i % Artists.length)]

@@ -1,13 +1,14 @@
-import {Store} from "./store"
-import {Store as APIStore} from "../api/store"
+import { StoreClient } from "./store"
+import { Store } from "../api/store"
 import { Indexable } from "../api/indexable"
 import { runBenchmark } from "./bench"
 
-class MemDBClient<T> implements Store<T> {
-  s: APIStore<T>
+// Client making use of a MemDB Store to store data
+class MemDBClient<T> implements StoreClient<T> {
+  s: Store<T>
 
   setup(t: T) {
-    this.s= new APIStore(t)
+    this.s= new Store(t)
   }
 
   store(t: T) {

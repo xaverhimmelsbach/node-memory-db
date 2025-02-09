@@ -3,41 +3,49 @@ import { fullBitmapFromIDs } from "./bitmap";
 import { Indexable } from "./indexable";
 import { Key } from "./key";
 
+// Store of arbitraty data in memory
 export class Store<T> {
-  items: T[];
-  index: Index<T>;
+  items: T[]; // Canonical list of all indexed items
+  index: Index<T>; // Indexes for each indexable field of T
 
+  // seed is an empty instance of T used to initialize the indexes
   constructor(seed: T) {
     this.items = []
-    this.index = Object.entries(seed).reduce<Index<T>>((prev, curr) => {
-      if(["string", "number", "symbol"].includes(typeof curr[1])) {
-        prev[curr[0]] = new Key<typeof curr[1]>()
+    this.index = Object.entries(seed).reduce<Index<T>>((index, seedField) => {
+      // Only add indexes for indexable fields
+      if(["string", "number", "symbol"].includes(typeof seedField[1])) {
+        index[seedField[0]] = new Key<typeof seedField[1]>()
       }
-      return prev
+      return index
     }, {} as Index<T>)
   }
 
+  // store an instance of T and index its fields
   store(t: T): void {
     const id = this.items.push(t) - 1;
 
     Object.entries(t).forEach((v) => {
       const index = this.index[v[0]]
+      // Skip unindexable fields
       if(index !== undefined) {
-        this.index[v[0]].index(v[1], id);
+        this.index[v[0]].set(v[1], id);
       }
     });
   }
 
+  // retrieve a list of instances of T matching the values of the given instance. Fields marked as undefined are ignored
   retrieve(t: Indexable<T>): T[] {
     console.time("bitmap")
     const ids = Object.entries(t)
       .reduce(
         (prev, curr) => {
           let next = prev
+          // Skip ignored fields
           if(curr[1] !== undefined) {
             const index = this.index[curr[0]]
+            // Only check indexable fields
             if(index !== undefined) {
-              next = prev.and(index.getBitmap(curr[1]))
+              next = prev.and(index.get(curr[1]))
             }
           }
           return next
@@ -48,8 +56,9 @@ export class Store<T> {
     console.timeEnd("bitmap")
 
     console.time("results")
-    var results: T[]
+    let results: T[]
     if(ids.length === this.items.length) {
+      // Optimization: all items matched
       results = this.items
     } else {
       results = this.items.filter((_, id) => ids.includes(id));
