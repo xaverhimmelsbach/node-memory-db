@@ -29,6 +29,7 @@ export class Store<T> {
   }
 
   retrieve(t: Indexable<T>): T[] {
+    console.time("bitmap")
     const ids = Object.entries(t)
       .reduce(
         (prev, curr) => {
@@ -44,7 +45,12 @@ export class Store<T> {
         fullBitmapFromIDs(this.items.map((_, index) => index)),
       )
       .get();
+    console.timeEnd("bitmap")
 
-    return this.items.filter((_, id) => ids.includes(id));
+    console.time("results")
+    const results = this.items.filter((_, id) => ids.includes(id));
+    console.timeEnd("results")
+
+    return results
   }
 }
