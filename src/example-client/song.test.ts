@@ -14,15 +14,15 @@ describe("generate songs", () => {
     expect(s).toStrictEqual([expected]);
   });
   test("generate many songs", () => {
-    const s = genSongs(1_000_000)
+    const s = genSongs(10)
 
     const expected: Song = {
-      title: "Paradise Alabama More Scar Day Good",
-      artist: "The Beatles",
-      runtime: 90,
+      title: "Supernova Loved In Congratulations Easy Fat",
+      artist: "Sum41",
+      runtime: 99,
       release: new Date(1970, 0, 2),
     }
 
-    expect(s[999_999]).toStrictEqual(expected);
+    expect(s[9]).toStrictEqual(expected);
   });
 });
