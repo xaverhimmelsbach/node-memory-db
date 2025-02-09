@@ -48,7 +48,12 @@ export class Store<T> {
     console.timeEnd("bitmap")
 
     console.time("results")
-    const results = this.items.filter((_, id) => ids.includes(id));
+    var results: T[]
+    if(ids.length === this.items.length) {
+      results = this.items
+    } else {
+      results = this.items.filter((_, id) => ids.includes(id));
+    }
     console.timeEnd("results")
 
     return results
