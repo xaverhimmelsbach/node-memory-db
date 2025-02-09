@@ -1,3 +1,4 @@
+import { Indexable } from "./indexable";
 import { Key } from "./key";
 import { Store } from "./store";
 
@@ -9,6 +10,14 @@ type ExpandedTestItem = {
   i: number;
   j: string;
 };
+
+type UnIndexableFieldTestItem = {
+  i: number;
+  j: number[];
+  k: {
+    x: number;
+  }
+}
 
 describe("testing store", () => {
   test("store item", () => {
@@ -74,31 +83,74 @@ describe("testing retrieve", () => {
 
     expect(s.retrieve(t)).toStrictEqual([t1, t2]);
   });
-  // TODO: Treat zeroed fields as ignores
-  // test("retrieve different items", () => {
-  //   const s = new Store<ExpandedTestItem>([], {
-  //     i: new Key<number>({}),
-  //     j: new Key<string>({}),
-  //   })
+  test("retrieve different items", () => {
+    const s = new Store<ExpandedTestItem>([], {
+      i: new Key<number>({}),
+      j: new Key<string>({}),
+    })
 
-  //   const t1: ExpandedTestItem = {
-  //     i: 1,
-  //     j: "Hello",
-  //   }
+    const t1: ExpandedTestItem = {
+      i: 1,
+      j: "Hello",
+    }
 
-  //   const t2: ExpandedTestItem = {
-  //     i: 1,
-  //     j: "World",
-  //   }
+    const t2: ExpandedTestItem = {
+      i: 1,
+      j: "World",
+    }
 
-  //   s.store(t1)
-  //   s.store(t2)
+    const t3: ExpandedTestItem = {
+      i: 1,
+      j: "!",
+    }
 
-  //   const t: ExpandedTestItem = {
-  //     i: 1,
-  //     j: "",
-  //   }
+    s.store(t1)
+    s.store(t2)
+    s.store(t3)
 
-  //   expect(s.retrieve(t)).toStrictEqual([t1, t2])
-  // })
+    const retr1: ExpandedTestItem = {
+      i: 1,
+      j: undefined,
+    }
+
+    const retr2: ExpandedTestItem = {
+      i: undefined,
+      j: "Hello",
+    }
+
+    const retr3: ExpandedTestItem = {
+      i: undefined,
+      j: "World",
+    }
+
+    const retr4: ExpandedTestItem = {
+      i: undefined,
+      j: "!",
+    }
+
+    expect(s.retrieve(retr1)).toStrictEqual([t1, t2, t3])
+    expect(s.retrieve(retr2)).toStrictEqual([t1])
+    expect(s.retrieve(retr3)).toStrictEqual([t2])
+    expect(s.retrieve(retr4)).toStrictEqual([t3])
+  })
+});
+
+describe("testing unindexable fields", () => {
+  test("unindexable fields", () => {
+    const s = new Store<Indexable<UnIndexableFieldTestItem>>([], {
+      i: new Key<number>({}),
+    });
+
+    const t: UnIndexableFieldTestItem= {
+      i: 1,
+      j: [2, 3, 4],
+      k: {
+        x: 5
+      }
+    };
+
+    s.store(t);
+
+    expect(s.retrieve(t as Indexable<UnIndexableFieldTestItem>)).toStrictEqual([t]);
+  });
 });
