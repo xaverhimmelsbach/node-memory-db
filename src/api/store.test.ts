@@ -1,5 +1,4 @@
 import { Indexable } from "./indexable";
-import { Key } from "./key";
 import { Store } from "./store";
 
 type TestItem = {
@@ -19,11 +18,26 @@ type UnIndexableFieldTestItem = {
   }
 }
 
+const TestItemSeed = {
+  i: 0,
+}
+
+const ExpandedTestItemSeed = {
+  i: 0,
+  j: "",
+};
+
+const UnIndexableFieldTestItemSeed = {
+  i: 0,
+  j: [0],
+  k: {
+    x: 0,
+  },
+}
+
 describe("testing store", () => {
   test("store item", () => {
-    const s = new Store<TestItem>([], {
-      i: new Key<number>({}),
-    });
+    const s = new Store<TestItem>(TestItemSeed);
 
     const t: TestItem = {
       i: 1,
@@ -38,10 +52,7 @@ describe("testing store", () => {
 
 describe("testing retrieve", () => {
   test("retrieve item", () => {
-    const s = new Store<ExpandedTestItem>([], {
-      i: new Key<number>({}),
-      j: new Key<string>({}),
-    });
+    const s = new Store<ExpandedTestItem>(ExpandedTestItemSeed);
 
     const t1: ExpandedTestItem = {
       i: 1,
@@ -58,10 +69,7 @@ describe("testing retrieve", () => {
     expect(s.retrieve(t)).toStrictEqual([t1]);
   });
   test("retrieve identical items", () => {
-    const s = new Store<ExpandedTestItem>([], {
-      i: new Key<number>({}),
-      j: new Key<string>({}),
-    });
+    const s = new Store<ExpandedTestItem>(ExpandedTestItemSeed);
 
     const t1: ExpandedTestItem = {
       i: 1,
@@ -84,10 +92,7 @@ describe("testing retrieve", () => {
     expect(s.retrieve(t)).toStrictEqual([t1, t2]);
   });
   test("retrieve different items", () => {
-    const s = new Store<ExpandedTestItem>([], {
-      i: new Key<number>({}),
-      j: new Key<string>({}),
-    })
+    const s = new Store<ExpandedTestItem>(ExpandedTestItemSeed)
 
     const t1: ExpandedTestItem = {
       i: 1,
@@ -137,9 +142,7 @@ describe("testing retrieve", () => {
 
 describe("testing unindexable fields", () => {
   test("unindexable fields", () => {
-    const s = new Store<Indexable<UnIndexableFieldTestItem>>([], {
-      i: new Key<number>({}),
-    });
+    const s = new Store<Indexable<UnIndexableFieldTestItem>>(UnIndexableFieldTestItemSeed);
 
     const t: UnIndexableFieldTestItem= {
       i: 1,

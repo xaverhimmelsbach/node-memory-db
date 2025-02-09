@@ -3,8 +3,8 @@ type Bitset = Record<number, unknown>;
 export class Bitmap {
   values: Bitset;
 
-  constructor(values: Bitset) {
-    this.values = values;
+  constructor() {
+    this.values = {} as Record<number, unknown>;
   }
 
   set(id: number): void {
@@ -30,7 +30,10 @@ export class Bitmap {
         return prev;
       }, {});
 
-    return new Bitmap(values);
+    const newB = new Bitmap();
+    newB.values = values
+
+    return newB
   }
 }
 
@@ -38,5 +41,5 @@ export function fullBitmapFromIDs(ids: number[]): Bitmap {
   return ids.reduce((prev, curr) => {
     prev.values[curr] = {};
     return prev;
-  }, new Bitmap({}));
+  }, new Bitmap());
 }

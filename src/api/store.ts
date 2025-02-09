@@ -1,14 +1,20 @@
 import { Index } from ".";
 import { fullBitmapFromIDs } from "./bitmap";
 import { Indexable } from "./indexable";
+import { Key } from "./key";
 
 export class Store<T> {
   items: T[];
   index: Index<T>;
 
-  constructor(items: T[], index: Index<T>) {
-    this.items = items;
-    this.index = index;
+  constructor(seed: T) {
+    this.items = []
+    this.index = Object.entries(seed).reduce<Index<T>>((prev, curr) => {
+      if(["string", "number", "symbol"].includes(typeof curr[1])) {
+        prev[curr[0]] = new Key<typeof curr[1]>()
+      }
+      return prev
+    }, {} as Index<T>)
   }
 
   store(t: T): void {
