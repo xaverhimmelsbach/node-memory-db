@@ -2,13 +2,21 @@ import { StoreClient } from "./store";
 import { Store } from "../api/store";
 import { Indexable } from "../api/indexable";
 import { runBenchmark } from "./bench";
+import { Song } from "./song";
+
+const SongSeed: Song = {
+  title: "",
+  artist: "",
+  runtime: 0,
+  release: new Date(),
+};
 
 // Client making use of a MemDB Store to store data
 class MemDBClient<T> implements StoreClient<T> {
   s: Store<T>;
 
-  setup(t: T) {
-    this.s = new Store(t);
+  constructor(seed: T) {
+    this.s = new Store(seed);
   }
 
   store(t: T) {
@@ -20,4 +28,4 @@ class MemDBClient<T> implements StoreClient<T> {
   }
 }
 
-runBenchmark(new MemDBClient());
+runBenchmark(new MemDBClient(SongSeed));

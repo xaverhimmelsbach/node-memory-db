@@ -1,17 +1,8 @@
 import { genSongs, Song } from "./song";
 import { StoreClient } from "./store";
 
-const SongSeed: Song = {
-  title: "",
-  artist: "",
-  runtime: 0,
-  release: new Date(),
-};
-
 // run a number of benchmarks on a StoreClient to compare implementations
 export function runBenchmark(s: StoreClient<Song>) {
-  s.setup(SongSeed);
-
   console.time("Generating songs...");
   const songs = genSongs(1_000_000);
   console.timeEnd("Generating songs...");
