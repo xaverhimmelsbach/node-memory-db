@@ -41,10 +41,11 @@ export class Bitmap {
   }
 }
 
-// Generate a bitmap set for every id of ids. Useful as a base bitmap
-export function fullBitmapFromIDs(ids: number[]): Bitmap {
-  return ids.reduce((prev, curr) => {
-    prev.bitset[curr] = {};
-    return prev;
-  }, new Bitmap());
+// Generate a bitmap set for every id of items. Useful as a base bitmap
+export function fullBitmapFromItems<T>(ids: T[]): Bitmap {
+  const bitmap = new Bitmap()
+  for(let i = 0; i < ids.length; i++) {
+    bitmap.bitset[i] = {}
+  }
+  return bitmap
 }

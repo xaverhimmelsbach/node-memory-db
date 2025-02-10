@@ -1,4 +1,4 @@
-import { Bitmap, fullBitmapFromIDs } from "./bitmap";
+import { Bitmap, fullBitmapFromItems } from "./bitmap";
 
 describe("testing bitmap set", () => {
   test("set entry", () => {
@@ -86,24 +86,24 @@ describe("testing bitmap and", () => {
   });
 });
 
-describe("testing fullBitmapFromIDs", () => {
+describe("testing fullBitmapFromItems", () => {
   test("from ids", () => {
-    const ids = [1, 2, 5];
+    const ids = [0, 2, 4];
 
     const expected = new Bitmap();
     expected.bitset = {
+      0: {},
       1: {},
       2: {},
-      5: {},
     };
 
-    expect(fullBitmapFromIDs(ids)).toStrictEqual(expected);
+    expect(fullBitmapFromItems(ids)).toStrictEqual(expected);
   });
   test("from empty", () => {
     const ids = [];
 
     const expected = new Bitmap();
 
-    expect(fullBitmapFromIDs(ids)).toStrictEqual(expected);
+    expect(fullBitmapFromItems(ids)).toStrictEqual(expected);
   });
 });

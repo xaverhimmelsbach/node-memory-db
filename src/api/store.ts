@@ -1,5 +1,5 @@
 import { Index } from ".";
-import { Bitmap } from "./bitmap";
+import { fullBitmapFromItems } from "./bitmap";
 import { Indexable } from "./indexable";
 import { Key } from "./key";
 
@@ -35,8 +35,8 @@ export class Store<T> {
 
   // retrieve a list of instances of T matching the values of the given instance. Fields marked as undefined are ignored
   retrieve(t: Indexable<T>): T[] {
-    const bitmap = Object.entries(t)
-      .reduce<Bitmap>(
+    const ids = Object.entries(t)
+      .reduce(
         (prev, curr) => {
           let next = prev;
           // Skip ignored fields
@@ -44,21 +44,14 @@ export class Store<T> {
             const index = this.index[curr[0]];
             // Only check indexable fields
             if (index !== undefined) {
-              if(prev === null) {
-                return index.get(curr[1])
-              }
               next = prev.and(index.get(curr[1]));
             }
           }
           return next;
         },
-        null,
+        fullBitmapFromItems(this.items),
       )
-
-    let ids = []
-    if(bitmap !== null) {
-      ids = bitmap.get();
-    }
+      .get();
 
     let results: T[] = [];
     if (ids.length === this.items.length) {
